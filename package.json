@@ -11,8 +11,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --colors",
-    "lint": "eslint --ext .ts,.tsx",
-    "lint:fix": "eslint --ext ts,tsx src --fix",
+    "lint": "eslint --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint --ext ts,tsx,.js,.jsx src --fix",
     "format": "prettier-eslint --write \"src/**/*.{ts,tsx,js,jsx}\""
   },
   "dependencies": {
