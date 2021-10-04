@@ -2,13 +2,13 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: './client/index.html',
+  template: './src/index.html',
   filename: 'index.html',
   inject: 'body'
 })
 
 module.exports = {
-  entry: './client/index.ts',
+  entry: './src/index.tsx',
   mode: 'development',
   output: {
     path: path.resolve('dist'),
@@ -33,7 +33,11 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      }
+      },
+      { 
+        test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
+        use: ["file-loader"] 
+    }
     ]
   },
   plugins: [HtmlWebpackPluginConfig]
