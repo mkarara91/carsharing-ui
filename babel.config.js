@@ -1,1 +1,2 @@
-module.exports = {presets: ['@babel/preset-env']}
+//mostly for jest
+module.exports = { presets: ["@babel/preset-env"] };
