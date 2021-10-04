@@ -15,7 +15,8 @@
     "test:coverage": "jest --coverage --colors",
     "lint": "eslint --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint --ext ts,tsx,.js,.jsx src --fix",
-    "format": "prettier-eslint --write \"src/**/*.{ts,tsx,js,jsx}\""
+    "format": "prettier-eslint --write \"src/**/*.{ts,tsx,js,jsx}\"",
+    "styleCheck": "prettier --check \"src/**/*.{ts,tsx,js,jsx}\"" 
   },
   "dependencies": {
     "enzyme-adapter-react-16": "^1.15.6",
