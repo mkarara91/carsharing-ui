@@ -16,7 +16,7 @@
     "lint": "eslint --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint --ext ts,tsx,.js,.jsx src --fix",
     "format": "prettier-eslint --write \"src/**/*.{ts,tsx,js,jsx}\"",
-    "styleCheck": "prettier --check \"src/**/*.{ts,tsx,js,jsx}\"" 
+    "styleCheck": "prettier --check \"src/**/*.{ts,tsx,js,jsx}\""
   },
   "dependencies": {
     "enzyme-adapter-react-16": "^1.15.6",
@@ -58,6 +58,7 @@
     "react-test-renderer": "^17.0.2",
     "sass-loader": "^12.1.0",
     "style-loader": "^3.3.0",
+    "trim-newlines": "^4.0.2",
     "ts-jest": "^27.0.5",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.3",
