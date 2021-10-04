@@ -1,5 +1,8 @@
 const path = require("path");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CleanWebpackPluginConfig = new CleanWebpackPlugin();
 const ESLintPlugin = require("eslint-webpack-plugin");
+const ESLingPluginConfig = new ESLintPlugin();
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: "./src/index.html",
@@ -9,7 +12,6 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
   entry: "./src/index.tsx",
-  mode: "development",
   output: {
     path: path.resolve("dist"),
     filename: "index.bundle.js",
@@ -17,9 +19,6 @@ module.exports = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
-  },
-  devServer: {
-    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -38,5 +37,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [HtmlWebpackPluginConfig, new ESLintPlugin()],
+  plugins: [HtmlWebpackPluginConfig, ESLingPluginConfig, CleanWebpackPluginConfig],
 };
