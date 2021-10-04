@@ -8,12 +8,15 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 })
 
 module.exports = {
-  entry: './client/index.js',
+  entry: './client/index.ts',
   mode: 'development',
   output: {
     path: path.resolve('dist'),
     filename: 'index.bundle.js',
     publicPath: '/'
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
   },
   devServer: {
     historyApiFallback: true,
@@ -27,13 +30,9 @@ module.exports = {
         ]
       },
       {
-        test: /\.js$/,
+        test: /\.tsx?$/,
+        use: 'ts-loader',
         exclude: /node_modules/,
-        use: "babel-loader"
-      }, {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: "babel-loader"
       }
     ]
   },
