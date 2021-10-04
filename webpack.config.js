@@ -23,21 +23,19 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.css$/,
-        use: [
-          { loader: "style-loader" },
-          { loader: "css-loader" }
-        ]
-      },
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
-      { 
-        test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
-        use: ["file-loader"] 
-    }
+        {
+            test: /\.scss$/,
+            use: ["style-loader", "css-loader", "sass-loader"]
+        },
+        {
+            test: /\.tsx?$/,
+            use: 'ts-loader',
+            exclude: /node_modules/,
+        },
+        { 
+            test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
+            use: ["file-loader"] 
+        }
     ]
   },
   plugins: [HtmlWebpackPluginConfig]
