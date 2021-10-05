@@ -3,7 +3,7 @@ import "./home.scss";
 import DestinationAddressSearchInput from "./map/inputs/DestinationAddressInput";
 import StartAddressSearchInput from "./map/inputs/StartAddressSearchInput";
 
-const Home = () => {
+const Home = (): JSX.Element => {
     return (
         <div className="main-wrapper">
             <h1>Car Pooling APP</h1>

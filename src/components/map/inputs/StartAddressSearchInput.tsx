@@ -1,7 +1,7 @@
 import * as React from "react";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete"
 
-const StartAddressSearchInput = () => {
+const StartAddressSearchInput = (): JSX.Element => {
     return (
         <div>
             <GooglePlacesAutocomplete apiKey=""/>
