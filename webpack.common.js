@@ -2,7 +2,9 @@ const path = require("path");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CleanWebpackPluginConfig = new CleanWebpackPlugin();
 const ESLintPlugin = require("eslint-webpack-plugin");
-const ESLingPluginConfig = new ESLintPlugin();
+const ESLingPluginConfig = new ESLintPlugin({
+  extensions: ['ts', 'tsx', 'js', 'jsx']
+});
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: "./src/index.html",
