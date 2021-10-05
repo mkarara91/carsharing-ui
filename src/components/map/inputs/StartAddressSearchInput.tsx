@@ -4,7 +4,7 @@ import GooglePlacesAutocomplete from "react-google-places-autocomplete"
 const StartAddressSearchInput = (): JSX.Element => {
     return (
         <div>
-            <GooglePlacesAutocomplete apiKey=""/>
+            <GooglePlacesAutocomplete apiKey="AIzaSyC-nJV8TMlz6OFta8jRo6zf--UImae-f0c"/>
         </div>
     );
 }
