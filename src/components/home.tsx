@@ -11,16 +11,15 @@ const Home = (): JSX.Element => {
             <div className="address-input-container">
                 <div className="start-input">
                     <h3>Enter Start Address:</h3>
-                    <StartAddressSearchInput/>
+                    <StartAddressSearchInput />
                 </div>
                 <div className="destination-input">
                     <h4>Enter Destination Address:</h4>
-                    <DestinationAddressSearchInput/>
+                    <DestinationAddressSearchInput />
                 </div>
-                
             </div>
-            
-        </div>);
+        </div>
+    );
 };
 
 export default Home;

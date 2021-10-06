@@ -1,8 +1,8 @@
 import * as React from "react";
 import { render } from "react-dom";
 import Home from "./components/home";
-import ConfigureStore from "./stores/ConfigureStore";
-import { Provider } from 'react-redux'
+import { store } from "./stores/ConfigureStore";
+import { Provider } from "react-redux";
 import "./style.scss";
 
 function App() {
@@ -14,8 +14,8 @@ function App() {
 }
 
 render(
-    <Provider store={ConfigureStore}>
+    <Provider store={store}>
         <App />
-    </Provider>, 
+    </Provider>,
     document.getElementById("root")
-    );
+);
