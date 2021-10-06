@@ -31,7 +31,8 @@ const StartAddressSearchInput = (): JSX.Element => {
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     disabled={!ready}
-                    placeholder="Enter Destination Address"></ComboboxInput>
+                    placeholder="Enter Destination Address"
+                ></ComboboxInput>
                 <ComboboxPopover>
                     {status === "OK" &&
                         data.map(({ description }, index) => (
