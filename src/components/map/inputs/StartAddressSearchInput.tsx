@@ -1,37 +1,35 @@
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxPopover } from "@reach/combobox";
 import * as React from "react";
 import usePlacesAutocomplete from "use-places-autocomplete";
-import { useAppDispatch, useAppSelector } from "../../../stores/hooks";
-import { selectStart, setStartGeoLocation } from "../../../stores/map/AddressSlicer";
+import { useAppDispatch } from "../../../stores/hooks";
+import { setStartGeoLocation } from "../../../stores/map/AddressSlicer";
+import "./inputStyle.scss";
 
 const StartAddressSearchInput = (): JSX.Element => {
     const {
         ready,
         value,
         setValue,
-        suggestions: { status, data }
+        suggestions: { status, data },
+        clearSuggestions
     } = usePlacesAutocomplete();
 
-    const startAddress = useAppSelector(selectStart);
-    const selectValue = startAddress.addressLabel;
-    if (selectValue) {
-        setValue(selectValue);
-    }
     const dispatch = useAppDispatch();
 
     const handleSelect = async (value: any) => {
-        setValue(value);
-        dispatch(setStartGeoLocation(value.label));
+        setValue(value, false);
+        dispatch(setStartGeoLocation(value));
+        clearSuggestions();
     };
 
     return (
-        <div>
+        <div className="address-input-container">
             <Combobox onSelect={(address) => handleSelect(address)}>
                 <ComboboxInput
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     disabled={!ready}
-                    placeholder="Enter Destination Address"
+                    placeholder="Enter Start Address"
                 ></ComboboxInput>
                 <ComboboxPopover>
                     {status === "OK" &&

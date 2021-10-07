@@ -4,5 +4,5 @@
     parser: "typescript",
     singleQuote: false,
     trailingComma: "none",
-    bracketSpacing: true
-}
+    bracketSpacing: true,
+}   
