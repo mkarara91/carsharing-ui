@@ -6,7 +6,8 @@
     // https://github.com/benmosher/eslint-plugin-import
     "import",
     // https://www.npmjs.com/package/eslint-plugin-jest
-    "jest"
+    "jest",
+    "prettier"
   ],
   "extends": [
     "plugin:react/recommended", // Uses the recommended rules from @eslint-plugin-react

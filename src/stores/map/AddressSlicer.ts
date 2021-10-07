@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
-import { LatLng } from "react-google-places-autocomplete/build/GooglePlacesAutocomplete.types";
+import { getGeocode, getLatLng, LatLon } from "use-places-autocomplete";
+
 import { RootState } from "../ConfigureStore";
 
 interface Address {
     addressLabel: string;
     geocodedAddess?: google.maps.GeocoderResult;
-    latLong?: LatLng;
+    latLong?: LatLon;
 }
 
 interface AddressState {
@@ -23,31 +23,24 @@ const initialState: AddressState = {
     }
 };
 
+const getGeocodedData = async (address: string) => {
+    const geocoderResult: google.maps.GeocoderResult[] = await getGeocode({
+        address
+    });
+    const longLat = await getLatLng(geocoderResult[0]);
+    return {
+        addressLabel: address,
+        geocodedAddess: geocoderResult[0],
+        latLong: longLat
+    } as Address;
+};
+
 export const setDestinationGeoLocation = createAsyncThunk<Address, string>(
     "address/setDestinationGeoLocation",
-    async (label: string) => {
-        const address: google.maps.GeocoderResult[] = await geocodeByAddress(label);
-        const LongLat = await getLatLng(address[0]);
-        return {
-            addressLabel: label,
-            geocodedAddess: address[0],
-            latLong: LongLat
-        } as Address;
-    }
+    getGeocodedData
 );
 
-export const setStartGeoLocation = createAsyncThunk<Address, string>(
-    "address/setStartGeoLocation",
-    async (label: string) => {
-        const address: google.maps.GeocoderResult[] = await geocodeByAddress(label);
-        const LongLat = await getLatLng(address[0]);
-        return {
-            addressLabel: label,
-            geocodedAddess: address[0],
-            latLong: LongLat
-        } as Address;
-    }
-);
+export const setStartGeoLocation = createAsyncThunk<Address, string>("address/setStartGeoLocation", getGeocodedData);
 
 export const AddressSlicer = createSlice({
     name: "address",
