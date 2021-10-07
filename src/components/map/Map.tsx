@@ -1,5 +1,8 @@
 import * as React from "react";
-import { GoogleMap } from "@react-google-maps/api";
+import { useCallback, useRef, useEffect } from "react";
+import { GoogleMap, Marker } from "@react-google-maps/api";
+import { useAppSelector } from "../../stores/hooks";
+import { Address, selectDestination, selectStart } from "../../stores/map/AddressSlicer";
 
 const center = {
     lat: -3.745,
@@ -16,12 +19,37 @@ type Props = {
 };
 
 const Map = (props: Props): JSX.Element => {
-    const onLoad = React.useCallback((map) => {
+    const startAddress = useAppSelector(selectStart);
+    const destinationAddress = useAppSelector(selectDestination);
+
+    const [startState, setStartState] = React.useState<Address | null>(null);
+    const [destinationState, setDestinationState] = React.useState<Address | null>(null);
+
+    const mapRef = useRef<google.maps.Map>();
+
+    const panTo = useCallback(({ lat, lng }) => {
+        mapRef.current?.panTo({ lat, lng });
+    }, []);
+
+    const onLoad = useCallback((map: google.maps.Map) => {
+        mapRef.current = map;
         const bounds = new window.google.maps.LatLngBounds();
         map.fitBounds(bounds);
     }, []);
 
-    const onUnmount = React.useCallback(() => {}, []);
+    const onUnmount = useCallback(() => {}, []);
+
+    useEffect(() => {
+        if (startAddress.latLong && startAddress !== startState) {
+            setStartState(startAddress);
+            panTo(startAddress.latLong);
+            mapRef.current?.setZoom(16);
+        } else if (destinationAddress.latLong && destinationAddress !== destinationState) {
+            setDestinationState(destinationAddress);
+            panTo(destinationAddress.latLong);
+            mapRef.current?.setZoom(12);
+        }
+    });
 
     return props.isLoaded ? (
         <GoogleMap
@@ -30,7 +58,10 @@ const Map = (props: Props): JSX.Element => {
             zoom={10}
             onLoad={onLoad}
             onUnmount={onUnmount}
-        ></GoogleMap>
+        >
+            {startState?.latLong && <Marker key="StartKey" position={startState.latLong}></Marker>}
+            {destinationState?.latLong && <Marker key="StartKey" position={destinationState.latLong}></Marker>}
+        </GoogleMap>
     ) : (
         <div></div>
     );

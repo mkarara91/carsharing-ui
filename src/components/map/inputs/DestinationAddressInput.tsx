@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Combobox, ComboboxInput, ComboboxPopover, ComboboxOption } from "@reach/combobox";
-import { selectDestination, setDestinationGeoLocation } from "../../../stores/map/AddressSlicer";
-import { useAppDispatch, useAppSelector } from "../../../stores/hooks";
+import { setDestinationGeoLocation } from "../../../stores/map/AddressSlicer";
+import { useAppDispatch } from "../../../stores/hooks";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import "@reach/combobox/styles.css";
 
@@ -10,17 +10,15 @@ const DestinationAddressSearchInput = (): JSX.Element => {
         ready,
         value,
         setValue,
-        suggestions: { status, data }
+        suggestions: { status, data },
+        clearSuggestions
     } = usePlacesAutocomplete();
-    const destinationAddress = useAppSelector(selectDestination);
-    const selectValue = destinationAddress.addressLabel;
-    if (selectValue) {
-        setValue(selectValue);
-    }
+
     const dispatch = useAppDispatch();
     const handleSelect = async (value: any) => {
-        setValue(value);
-        dispatch(setDestinationGeoLocation(value.label));
+        setValue(value, false);
+        dispatch(setDestinationGeoLocation(value));
+        clearSuggestions();
     };
     return (
         <div>

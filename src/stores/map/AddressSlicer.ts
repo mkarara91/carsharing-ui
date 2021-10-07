@@ -3,7 +3,7 @@ import { getGeocode, getLatLng, LatLon } from "use-places-autocomplete";
 
 import { RootState } from "../ConfigureStore";
 
-interface Address {
+export interface Address {
     addressLabel: string;
     geocodedAddess?: google.maps.GeocoderResult;
     latLong?: LatLon;
