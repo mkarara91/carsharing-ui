@@ -29,7 +29,8 @@ const Map = (props: Props): JSX.Element => {
             center={center}
             zoom={10}
             onLoad={onLoad}
-            onUnmount={onUnmount}></GoogleMap>
+            onUnmount={onUnmount}
+        ></GoogleMap>
     ) : (
         <div></div>
     );
