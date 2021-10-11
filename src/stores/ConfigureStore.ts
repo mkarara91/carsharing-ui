@@ -8,7 +8,14 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
-                ignoredActions: ["address/setDestinationGeoLocation/fulfilled", "address/setStartGeoLocation/fulfilled"]
+                ignoredActions: [
+                    "address/setDestinationGeoLocation/fulfilled",
+                    "address/setDestinationGeoLocation/pending",
+                    "address/setStartGeoLocation/fulfilled",
+                    "address/setStartGeoLocation/pending",
+                    "address/setDirection/fulfilled",
+                    "address/setDirection/pending"
+                ]
             }
         })
 });
