@@ -12,6 +12,7 @@ export interface Address {
 interface AddressState {
     startAddress: Address;
     destinationAddress: Address;
+    direction: google.maps.DirectionsResult | null;
 }
 
 const initialState: AddressState = {
@@ -20,7 +21,8 @@ const initialState: AddressState = {
     },
     destinationAddress: {
         addressLabel: ""
-    }
+    },
+    direction: null
 };
 
 const getGeocodedData = async (address: string) => {
@@ -42,6 +44,31 @@ export const setDestinationGeoLocation = createAsyncThunk<Address, string>(
 
 export const setStartGeoLocation = createAsyncThunk<Address, string>("address/setStartGeoLocation", getGeocodedData);
 
+export const setDirection = createAsyncThunk<google.maps.DirectionsResult, { start: LatLon; end: LatLon }>(
+    "address/setDirection",
+    async (data: { start: LatLon; end: LatLon }) => {
+        const DirectionsService = new google.maps.DirectionsService();
+
+        const result: google.maps.DirectionsResult = await DirectionsService.route(
+            {
+                origin: new google.maps.LatLng(data.start.lat, data.start.lng),
+                destination: new google.maps.LatLng(data.end.lat, data.end.lng),
+                travelMode: google.maps.TravelMode.DRIVING
+            },
+            (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    return result;
+                } else {
+                    console.error(`error fetching directions ${result}`);
+                    return null;
+                }
+            }
+        );
+
+        return result;
+    }
+);
+
 export const AddressSlicer = createSlice({
     name: "address",
     initialState: initialState,
@@ -60,6 +87,9 @@ export const AddressSlicer = createSlice({
         builder.addCase(setStartGeoLocation.fulfilled, (state, { payload }) => {
             state.startAddress = payload;
         });
+        builder.addCase(setDirection.fulfilled, (state, { payload }) => {
+            state.direction = payload;
+        });
     }
 });
 
@@ -67,5 +97,5 @@ export const { changeStartAddress, changeDestinationAddress } = AddressSlicer.ac
 
 export const selectStart = (state: RootState): Address => state.address.startAddress;
 export const selectDestination = (state: RootState): Address => state.address.destinationAddress;
-
+export const selectDirection = (state: RootState): google.maps.DirectionsResult | null => state.address.direction;
 export default AddressSlicer.reducer;

@@ -1,8 +1,9 @@
 import * as React from "react";
 import { useCallback, useRef, useEffect } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import { useAppSelector } from "../../stores/hooks";
-import { Address, selectDestination, selectStart } from "../../stores/map/AddressSlicer";
+import { useAppDispatch, useAppSelector } from "../../stores/hooks";
+import { Address, selectDestination, selectStart, setDirection } from "../../stores/map/AddressSlicer";
+import TravelDirection from "./TravelDirection";
 
 const center = {
     lat: -3.745,
@@ -21,6 +22,7 @@ type Props = {
 const Map = (props: Props): JSX.Element => {
     const startAddress = useAppSelector(selectStart);
     const destinationAddress = useAppSelector(selectDestination);
+    const dispatch = useAppDispatch();
 
     const [startState, setStartState] = React.useState<Address | null>(null);
     const [destinationState, setDestinationState] = React.useState<Address | null>(null);
@@ -49,6 +51,10 @@ const Map = (props: Props): JSX.Element => {
             panTo(destinationAddress.latLong);
             mapRef.current?.setZoom(12);
         }
+
+        if (startAddress.latLong && destinationAddress.latLong) {
+            dispatch(setDirection({ start: startAddress.latLong, end: destinationAddress.latLong }));
+        }
     });
 
     return props.isLoaded ? (
@@ -60,7 +66,8 @@ const Map = (props: Props): JSX.Element => {
             onUnmount={onUnmount}
         >
             {startState?.latLong && <Marker key="StartKey" position={startState.latLong}></Marker>}
-            {destinationState?.latLong && <Marker key="StartKey" position={destinationState.latLong}></Marker>}
+            {destinationState?.latLong && <Marker key="DestinationKey" position={destinationState.latLong}></Marker>}
+            <TravelDirection></TravelDirection>
         </GoogleMap>
     ) : (
         <div></div>
