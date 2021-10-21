@@ -7,8 +7,8 @@ export interface Address {
 }
 
 export interface UserJourney {
-    directionId?: string | null | undefined
-    start: LatLon
-    end: LatLon
-    journey: Array<LatLon>
+    directionId?: string | null | undefined;
+    start: LatLon;
+    end: LatLon;
+    journey: Array<LatLon>;
 }

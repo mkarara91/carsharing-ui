@@ -28,6 +28,5 @@ describe("tests for AddressUtil", () => {
         expect(result.start.lat).toBe(1);
         expect(result.start.lng).toBe(2);
         expect(result.journey.length).toBe(8);
-
     });
 });
