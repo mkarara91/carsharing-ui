@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Combobox, ComboboxInput, ComboboxPopover, ComboboxOption } from "@reach/combobox";
-import { setDestinationGeoLocation } from "../../../stores/map/AddressSlicer";
 import { useAppDispatch } from "../../../stores/hooks";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import "@reach/combobox/styles.css";
+import { setDestinationGeoLocation } from "../../../client/GoogleAsyncClient";
 
 const DestinationAddressSearchInput = (): JSX.Element => {
     const {
