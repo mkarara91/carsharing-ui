@@ -1,18 +1,15 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getGeocode, getLatLng, LatLon } from "use-places-autocomplete";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { setDestinationGeoLocation, setDirection, setStartGeoLocation } from "../../client/GoogleAsyncClient";
+import { Address, UserJourney } from "../../datatypes/journeyTypes";
+import { parseGoogleDirection } from "../../utils/AddressUtil";
 
 import { RootState } from "../ConfigureStore";
-
-export interface Address {
-    addressLabel: string;
-    geocodedAddess?: google.maps.GeocoderResult;
-    latLong?: LatLon;
-}
 
 interface AddressState {
     startAddress: Address;
     destinationAddress: Address;
     direction: google.maps.DirectionsResult | null;
+    userJourney: UserJourney | null;
 }
 
 const initialState: AddressState = {
@@ -22,52 +19,9 @@ const initialState: AddressState = {
     destinationAddress: {
         addressLabel: ""
     },
-    direction: null
+    direction: null,
+    userJourney: null
 };
-
-const getGeocodedData = async (address: string) => {
-    const geocoderResult: google.maps.GeocoderResult[] = await getGeocode({
-        address
-    });
-    const longLat = await getLatLng(geocoderResult[0]);
-    return {
-        addressLabel: address,
-        geocodedAddess: geocoderResult[0],
-        latLong: longLat
-    } as Address;
-};
-
-export const setDestinationGeoLocation = createAsyncThunk<Address, string>(
-    "address/setDestinationGeoLocation",
-    getGeocodedData
-);
-
-export const setStartGeoLocation = createAsyncThunk<Address, string>("address/setStartGeoLocation", getGeocodedData);
-
-export const setDirection = createAsyncThunk<google.maps.DirectionsResult, { start: LatLon; end: LatLon }>(
-    "address/setDirection",
-    async (data: { start: LatLon; end: LatLon }) => {
-        const DirectionsService = new google.maps.DirectionsService();
-
-        const result: google.maps.DirectionsResult = await DirectionsService.route(
-            {
-                origin: new google.maps.LatLng(data.start.lat, data.start.lng),
-                destination: new google.maps.LatLng(data.end.lat, data.end.lng),
-                travelMode: google.maps.TravelMode.DRIVING
-            },
-            (result, status) => {
-                if (status === google.maps.DirectionsStatus.OK) {
-                    return result;
-                } else {
-                    console.error(`error fetching directions ${result}`);
-                    return null;
-                }
-            }
-        );
-
-        return result;
-    }
-);
 
 export const AddressSlicer = createSlice({
     name: "address",
@@ -78,6 +32,9 @@ export const AddressSlicer = createSlice({
         },
         changeDestinationAddress: (state, action: PayloadAction<string>) => {
             state.destinationAddress.addressLabel = action.payload;
+        },
+        changeUserJourney: (state, action: PayloadAction<UserJourney>) => {
+            state.userJourney = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -89,13 +46,21 @@ export const AddressSlicer = createSlice({
         });
         builder.addCase(setDirection.fulfilled, (state, { payload }) => {
             state.direction = payload;
+            if (state.startAddress.latLong && state.destinationAddress.latLong) {
+                state.userJourney = parseGoogleDirection(
+                    payload,
+                    state.startAddress.latLong,
+                    state.destinationAddress.latLong
+                );
+            }
         });
     }
 });
 
-export const { changeStartAddress, changeDestinationAddress } = AddressSlicer.actions;
+export const { changeStartAddress, changeDestinationAddress, changeUserJourney } = AddressSlicer.actions;
 
 export const selectStart = (state: RootState): Address => state.address.startAddress;
 export const selectDestination = (state: RootState): Address => state.address.destinationAddress;
 export const selectDirection = (state: RootState): google.maps.DirectionsResult | null => state.address.direction;
+export const selectUserJourney = (state: RootState): UserJourney | null => state.address.userJourney;
 export default AddressSlicer.reducer;

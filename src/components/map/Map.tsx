@@ -2,8 +2,10 @@ import * as React from "react";
 import { useCallback, useRef, useEffect } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import { useAppDispatch, useAppSelector } from "../../stores/hooks";
-import { Address, selectDestination, selectStart, setDirection } from "../../stores/map/AddressSlicer";
+import { selectDestination, selectStart } from "../../stores/map/AddressSlicer";
 import TravelDirection from "./TravelDirection";
+import { Address } from "../../datatypes/journeyTypes";
+import { setDirection } from "../../client/GoogleAsyncClient";
 
 const center = {
     lat: -3.745,

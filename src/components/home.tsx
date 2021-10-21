@@ -2,6 +2,7 @@ import * as React from "react";
 import "./home.scss";
 import DestinationAddressSearchInput from "./map/inputs/DestinationAddressInput";
 import StartAddressSearchInput from "./map/inputs/StartAddressSearchInput";
+import SubmitTrip from "./map/inputs/SubmitTrip";
 import Map from "./map/Map";
 
 type Props = {
@@ -21,6 +22,9 @@ const Home = (props: Props): JSX.Element => {
                 <div className="destination-input">
                     <h4>Enter Destination Address:</h4>
                     {props.isLoaded && <DestinationAddressSearchInput />}
+                </div>
+                <div className="submit-trip">
+                    <SubmitTrip></SubmitTrip>
                 </div>
             </div>
             <div className="map-container">
