@@ -1,18 +1,21 @@
 import * as React from "react";
-import { useAppSelector } from "../../stores/hooks";
-import { selectDirection } from "../../stores/map/AddressSlicer";
+
 import { DirectionsRenderer } from "@react-google-maps/api";
 
-const TravelDirection = (): JSX.Element | null => {
-    const direction = useAppSelector(selectDirection);
-
-    if (direction) {
+type Props = {
+    direction: google.maps.DirectionsResult | null;
+    color: string;
+    opacity: number;
+};
+const TravelDirection = (props: Props): JSX.Element | null => {
+    if (props.direction) {
         return (
             <DirectionsRenderer
-                directions={direction}
+                directions={props.direction}
                 options={{
                     polylineOptions: {
-                        strokeOpacity: 1,
+                        strokeColor: props.color,
+                        strokeOpacity: props.opacity,
                         strokeWeight: 4
                     },
                     preserveViewport: true,

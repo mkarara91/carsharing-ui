@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { setDestinationGeoLocation, setDirection, setStartGeoLocation } from "../../client/GoogleAsyncClient";
+import {
+    setDestinationGeoLocation,
+    setDirection,
+    setMatchingDirection,
+    setStartGeoLocation
+} from "../../client/GoogleAsyncClient";
 import { Address, UserJourney } from "../../datatypes/journeyTypes";
 import { parseGoogleDirection } from "../../utils/AddressUtil";
 
@@ -10,6 +15,8 @@ interface AddressState {
     destinationAddress: Address;
     direction: google.maps.DirectionsResult | null;
     userJourney: UserJourney | null;
+    matchingJournies: UserJourney[];
+    matchingDirection: google.maps.DirectionsResult | null;
 }
 
 const initialState: AddressState = {
@@ -20,7 +27,9 @@ const initialState: AddressState = {
         addressLabel: ""
     },
     direction: null,
-    userJourney: null
+    userJourney: null,
+    matchingJournies: [],
+    matchingDirection: null
 };
 
 export const AddressSlicer = createSlice({
@@ -35,6 +44,9 @@ export const AddressSlicer = createSlice({
         },
         changeUserJourney: (state, action: PayloadAction<UserJourney>) => {
             state.userJourney = action.payload;
+        },
+        setMatchingJournies: (state, action: PayloadAction<UserJourney[]>) => {
+            state.matchingJournies = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -54,13 +66,20 @@ export const AddressSlicer = createSlice({
                 );
             }
         });
+        builder.addCase(setMatchingDirection.fulfilled, (state, { payload }) => {
+            state.matchingDirection = payload;
+        });
     }
 });
 
-export const { changeStartAddress, changeDestinationAddress, changeUserJourney } = AddressSlicer.actions;
+export const { changeStartAddress, changeDestinationAddress, changeUserJourney, setMatchingJournies } =
+    AddressSlicer.actions;
 
 export const selectStart = (state: RootState): Address => state.address.startAddress;
 export const selectDestination = (state: RootState): Address => state.address.destinationAddress;
 export const selectDirection = (state: RootState): google.maps.DirectionsResult | null => state.address.direction;
 export const selectUserJourney = (state: RootState): UserJourney | null => state.address.userJourney;
+export const selectMatchingJournies = (state: RootState): UserJourney[] | null => state.address.matchingJournies;
+export const selectMatchingDirection = (state: RootState): google.maps.DirectionsResult | null =>
+    state.address.matchingDirection;
 export default AddressSlicer.reducer;

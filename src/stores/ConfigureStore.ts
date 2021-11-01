@@ -15,7 +15,10 @@ export const store = configureStore({
                     "address/setStartGeoLocation/pending",
                     "address/setDirection/fulfilled",
                     "address/setDirection/pending",
-                    "address/changeUserJourney"
+                    "address/setMatchingDirection/fulfilled",
+                    "address/setMatchingDirection/pending",
+                    "address/changeUserJourney",
+                    "address/setMatchingJournies"
                 ]
             }
         })

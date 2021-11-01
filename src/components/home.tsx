@@ -1,8 +1,9 @@
 import * as React from "react";
 import "./home.scss";
 import DestinationAddressSearchInput from "./map/inputs/DestinationAddressInput";
+import { FindMatchButton } from "./map/inputs/FindMatchButton";
 import StartAddressSearchInput from "./map/inputs/StartAddressSearchInput";
-import SubmitTrip from "./map/inputs/SubmitTrip";
+import SubmitTripButton from "./map/inputs/SubmitTripButton";
 import Map from "./map/Map";
 
 type Props = {
@@ -24,7 +25,10 @@ const Home = (props: Props): JSX.Element => {
                     {props.isLoaded && <DestinationAddressSearchInput />}
                 </div>
                 <div className="submit-trip">
-                    <SubmitTrip></SubmitTrip>
+                    <SubmitTripButton></SubmitTripButton>
+                </div>
+                <div className="find-match">
+                    <FindMatchButton></FindMatchButton>
                 </div>
             </div>
             <div className="map-container">
